@@ -3,16 +3,29 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Project - LIFE | Last-minute Intervention, Full Existence</title>
-<meta name="description" content="Project - LIFE is a real-time computer-vision guardian that detects falls, fire, and armed threats, then raises the alarm and alerts the right responders." />
+<title>VisionGuard | Last-minute Intervention, Full Existence</title>
+<meta name="description" content="VisionGuard is a real-time computer-vision guardian that detects falls, fire, and armed threats, then raises the alarm and alerts the right responders." />
 <link rel="icon" href="/logo.svg" type="image/svg+xml" />
 <style>
   :root {
-    --bg: #0a0b0d; --bg2: #101216; --panel: #14171c; --panel2: #1a1e25;
-    --border: #262b33; --text: #e7ebf0; --muted: #99a3b2; --faint: #6b7482;
-    --red: #ef4444; --amber: #f5a623; --blue: #4c8dff; --green: #22c55e;
-    --accent: #ef4444; --radius: 14px;
-  }
+  --bg: #07111f;
+  --bg2: #0b1728;
+  --panel: #0f2033;
+  --panel2: #132a40;
+
+  --border: #1d3a52;
+  --text: #e8f4ff;
+  --muted: #9bb3c8;
+  --faint: #637d93;
+
+  --red: #ff4d67;
+  --amber: #ffb84d;
+  --blue: #38bdf8;
+  --green: #22c55e;
+
+  --accent: #22d3ee;
+  --radius: 14px;
+}
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
@@ -46,9 +59,25 @@
   .dot.on { background: var(--green); box-shadow: 0 0 8px var(--green); }
   .dot.alert { background: var(--red); box-shadow: 0 0 8px var(--red); }
   @media (max-width: 820px){ nav.links { display: none; } }
+  @media (max-width: 900px){
+    .hero .wrap { grid-template-columns: 1fr; }
+    .hero-visual { min-height: 500px; margin-top: 20px; }
+  }
+  @media (max-width: 600px){
+    .hero h1 { font-size: 46px; }
+    .hero-visual { min-height: 560px; transform: scale(.92); transform-origin: top center; }
+    .detect-card { left: 0; width: 220px; }
+    .ai-analysis { right: 0; width: 165px; }
+  }
 
   /* ---------- hero ---------- */
   .hero { position: relative; padding: 88px 0 60px; overflow: hidden; }
+  .hero .wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
   .hero::before {
     content:""; position:absolute; inset:0;
     background:
@@ -56,6 +85,13 @@
       linear-gradient(180deg, var(--bg2), var(--bg));
     z-index:-1;
   }
+  .hero-visual {
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
   .kicker { display:inline-flex; align-items:center; gap:8px; font-size:12px; letter-spacing:2px;
     text-transform:uppercase; color:var(--accent); border:1px solid rgba(239,68,68,.3);
     padding:6px 12px; border-radius:999px; background:rgba(239,68,68,.08); }
@@ -144,25 +180,180 @@
 
   footer { border-top:1px solid var(--border); padding: 34px 0; color: var(--muted); font-size: 13px; }
   .foot { display:flex; justify-content:space-between; gap: 20px; flex-wrap: wrap; align-items:center; }
+  .detect-card {
+  position: absolute;
+  left: 20px;
+  width: 245px;
+  padding: 17px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 15px;
+  background: rgba(15, 32, 51, 0.92);
+  backdrop-filter: blur(8px);
+  z-index: 5;
+}
+.detect-card {
+  cursor: pointer;
+  user-select: none;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.detect-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 0 22px rgba(34, 211, 238, .14);
+}
+.detect-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.detect-card.detector-enabled {
+  background: rgba(19, 42, 64, .98);
+  box-shadow: 0 0 20px rgba(34, 211, 238, .12);
+}
+
+.detect-card strong,
+.detect-card small {
+  display: block;
+}
+
+.detect-card small {
+  color: var(--muted);
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.detect-icon {
+  font-size: 28px;
+}
+
+.fall-card {
+  top: 175px;
+  border: 1px solid #ff4d67;
+}
+
+.fire-card {
+  top: 270px;
+  border: 1px solid #ffb84d;
+}
+
+.threat-card {
+  top: 365px;
+  border: 1px solid #a855f7;
+}
+.camera-visual {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 280px;
+  height: 150px;
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 0 25px rgba(34, 211, 238, .35));
+}
+
+.camera-body {
+  width: 230px;
+  height: 105px;
+  margin-left: 35px;
+  border: 2px solid #22d3ee;
+  border-radius: 25px 12px 12px 25px;
+  background: linear-gradient(135deg, #132a40, #07111f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-body span {
+  color: #22d3ee;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.camera-lens {
+  position: absolute;
+  left: 0;
+  top: 28px;
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #22d3ee 0 8%,
+    #07111f 10% 35%,
+    #163c57 37% 60%,
+    #07111f 62%
+  );
+  border: 4px solid #22d3ee;
+  z-index: 2;
+}
+
+.ai-analysis {
+  position: absolute;
+  right: 8px;
+  top: 245px;
+  width: 180px;
+  padding: 22px;
+  border: 1px solid #22d3ee;
+  border-radius: 18px;
+  background: rgba(7, 17, 31, 0.95);
+  box-shadow: 0 0 25px rgba(34, 211, 238, 0.15);
+  z-index: 20;
+}
+
+.ai-title {
+  color: #22d3ee;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.ai-icon {
+  font-size: 35px;
+  color: #22d3ee;
+  margin: 10px 0;
+}
+
+.ai-analysis strong {
+  display: block;
+  font-size: 19px;
+  line-height: 1.25;
+}
 </style>
 </head>
 <body>
 
+
 <header>
   <div class="wrap nav">
     <div class="brand">
-      <svg class="logo" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-label="Project - LIFE">
-        <defs>
-          <linearGradient id="hg" x1="24" y1="30" x2="104" y2="104" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#ff5a5f"/><stop offset="1" stop-color="#e11d2a"/>
-          </linearGradient>
-        </defs>
-        <rect x="2" y="2" width="124" height="124" rx="28" fill="#14171c" stroke="#2a2e37" stroke-width="2"/>
-        <path d="M64 103C64 103 26 79 26 51.5C26 38 36 29 47.5 29C55 29 61 33 64 39C67 33 73 29 80.5 29C92 29 102 38 102 51.5C102 79 64 103 64 103Z" fill="none" stroke="url(#hg)" stroke-width="6" stroke-linejoin="round"/>
-        <path d="M30 64H49L56 47L66 84L74 60L80 64H98" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="vgLogo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+
+  <path
+    d="M50 5 L88 18 V45 C88 70 72 87 50 96 C28 87 12 70 12 45 V18 Z"
+    fill="#07111f"
+    stroke="url(#vgLogo)"
+    stroke-width="5"
+  />
+
+  <circle
+    cx="50"
+    cy="45"
+    r="20"
+    fill="#0f2033"
+    stroke="#22d3ee"
+    stroke-width="4"
+  />
+
+  <circle cx="50" cy="45" r="8" fill="#22d3ee"/>
+  <circle cx="50" cy="45" r="3" fill="#07111f"/>
+</svg>
+
       <div>
-        <div class="name">Project - LI<span>F</span>E</div>
+        <div class="name">Vision<span>Guard</span></div>
         <div class="tag">Last-minute Intervention, Full Existence</div>
       </div>
     </div>
@@ -181,17 +372,18 @@
 <section class="hero" id="overview" style="border-top:none">
   <div class="wrap">
     <span class="kicker">Real-time emergency detection</span>
-    <h1>Project - LI<span class="accent">F</span>E</h1>
+    <h1>Vision<span class="accent">Guard</span></h1>
     <div class="expand">Last-minute Intervention, Full&nbsp;Existence</div>
-    <p class="lead">
-      Project - LIFE is a computer-vision guardian that watches a camera feed, recognizes life-threatening
-      moments the instant they happen &mdash; a person <b>falling</b>, <b>fire or smoke</b>,
-      an <b>armed threat</b> &mdash; then raises the alarm and dispatches the right responders.
-      When seconds decide outcomes, Project - LIFE buys back the minutes that matter.
-    </p>
-    <div class="cta">
+   <p class="lead">
+  VisionGuard is a computer-vision guardian that watches a camera feed, recognizes life-threatening
+  moments the instant they happen &mdash; a person <b>falling</b>, <b>fire or smoke</b>,
+  an <b>armed threat</b> &mdash; then raises the alarm and dispatches the right responders.
+  When seconds decide outcomes, VisionGuard buys back the minutes that matter.
+</p>
+
+<div class="cta">
       <a class="btn primary" href="#console">Open live console</a>
-      <a class="btn ghost" href="https://github.com/RoboX2020/LIFE-system" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="btn ghost" href="https://github.com/Anjali-Singh764/VisionGuard" target="_blank" rel="noopener">View on GitHub</a>
     </div>
     <div class="stats">
       <div class="stat"><div class="n" id="s-fps">--</div><div class="l">frames / sec</div></div>
@@ -199,6 +391,49 @@
       <div class="stat"><div class="n">&lt;1s</div><div class="l">detect-to-alert</div></div>
       <div class="stat"><div class="n">100%</div><div class="l">on-device / private</div></div>
     </div>
+    <div class="hero-visual">
+
+  <div class="camera-visual">
+    <div class="camera-lens"></div>
+    <div class="camera-body">
+      <span>VISIONGUARD</span>
+    </div>
+  </div>
+
+  <div class="detect-card fall-card" data-detector="fall" role="button" tabindex="0"
+     onclick="toggleHeroDetector('fall')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleHeroDetector('fall')">
+    <span class="detect-icon">🏃</span>
+    <div>
+      <strong>FALL</strong>
+      <small>DETECTION</small>
+    </div>
+  </div>
+
+  <div class="detect-card fire-card" data-detector="fire" role="button" tabindex="0"
+     onclick="toggleHeroDetector('fire')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleHeroDetector('fire')">
+    <span class="detect-icon">🔥</span>
+    <div>
+      <strong>FIRE &amp; SMOKE</strong>
+      <small>DETECTION</small>
+    </div>
+  </div>
+
+  <div class="detect-card threat-card" data-detector="weapon" role="button" tabindex="0"
+     onclick="toggleHeroDetector('weapon')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleHeroDetector('weapon')">
+    <span class="detect-icon">⚠</span>
+    <div>
+      <strong>ARMED THREAT</strong>
+      <small>DETECTION</small>
+    </div>
+  </div>
+
+  <div class="ai-analysis">
+    <span class="ai-title">AI ANALYSIS</span>
+    <div class="ai-icon">◉</div>
+    <strong>FASTER<br>SAFER<br>LIVES</strong>
+  </div>
+
+</div>
   </div>
 </section>
 
@@ -206,7 +441,7 @@
 <section id="capabilities">
   <div class="wrap">
     <div class="eyebrow">Capabilities</div>
-    <div class="h2">What LIFE sees</div>
+    <div class="h2">What VisionGuard sees</div>
     <p class="sub">Each hazard is an independent detector. Signals are confirmed over time, then fused into an incident with a severity and a responder.</p>
     <div class="grid">
       <div class="card">
@@ -295,14 +530,14 @@
   <div class="wrap">
     <div class="eyebrow">About</div>
     <div class="h2">Built for the minutes that matter</div>
-    <p class="sub">Project - LIFE routes each incident to the appropriate agency. Contacts are configurable per deployment.</p>
+    <p class="sub">VisionGuard routes each incident to the appropriate agency. Contacts are configurable per deployment.</p>
     <div class="resp">
       <div class="r"><div class="who">Medical / EMS</div><div class="num" id="r-ems">108</div><div class="muted">Falls &amp; medical events</div></div>
       <div class="r"><div class="who">Fire Department</div><div class="num" id="r-fire">101</div><div class="muted">Fire &amp; smoke</div></div>
       <div class="r"><div class="who">Police</div><div class="num" id="r-police">100</div><div class="muted">Weapons &amp; threats</div></div>
     </div>
     <div class="disclaimer">
-      <b>Responsible use.</b> Project - LIFE is an assistive alerting tool, not a certified life-safety system.
+      <b>Responsible use.</b> VisionGuard is an assistive alerting tool, not a certified life-safety system.
       Keep a human in the loop, post clear "area under monitoring" notices, comply with local law, and
       never auto-dial public emergency lines without authorization &mdash; route through a sanctioned
       monitoring provider.
@@ -312,8 +547,8 @@
 
 <footer>
   <div class="wrap foot">
-    <div><b>Project - LIFE</b> &middot; Last-minute Intervention, Full Existence</div>
-    <div><a href="https://github.com/RoboX2020/LIFE-system" target="_blank" rel="noopener">GitHub</a> &middot; Assistive tool, not a certified safety system</div>
+    <div><b>VisionGuard</b> &middot; Last-minute Intervention, Full Existence</div>
+    <div><a href="https://github.com/Anjali-Singh764/VisionGuard" target="_blank" rel="noopener">GitHub</a> &middot; Assistive tool, not a certified safety system</div>
   </div>
 </footer>
 
@@ -324,16 +559,49 @@ const DETECTORS = ["fall", "fire", "weapon"];
 
 function renderToggles(states){
   const el = document.getElementById("toggles");
-  if (el.dataset.built){ DETECTORS.forEach(n=>{const c=document.getElementById("t-"+n); if(c) c.checked=!!states[n];}); return; }
+  if (el.dataset.built){
+    DETECTORS.forEach(n=>{
+      const c=document.getElementById("t-"+n);
+      if(c) c.checked=!!states[n];
+      updateHeroDetectorCard(n, !!states[n]);
+    });
+    return;
+  }
   el.innerHTML = "";
   DETECTORS.forEach(n=>{
     const label = document.createElement("label");
     label.className = "toggle";
     label.innerHTML = `<input type="checkbox" id="t-${n}" ${states[n]?"checked":""}/> ${n}`;
-    label.querySelector("input").addEventListener("change", e=>toggleDetector(n, e.target.checked));
+    label.querySelector("input").addEventListener("change", e=>{
+      toggleDetector(n, e.target.checked);
+      updateHeroDetectorCard(n, e.target.checked);
+    });
     el.appendChild(label);
+    updateHeroDetectorCard(n, !!states[n]);
   });
   el.dataset.built = "1";
+}
+
+function updateHeroDetectorCard(name, enabled){
+  const card = document.querySelector(`.detect-card[data-detector="${name}"]`);
+  if (!card) return;
+  card.classList.toggle("detector-enabled", enabled);
+  card.setAttribute("aria-pressed", String(enabled));
+}
+
+async function toggleHeroDetector(name){
+  const checkbox = document.getElementById("t-"+name);
+  const next = checkbox ? !checkbox.checked : true;
+
+  if (checkbox) checkbox.checked = next;
+  updateHeroDetectorCard(name, next);
+
+  try {
+    await toggleDetector(name, next);
+  } catch (err) {
+    if (checkbox) checkbox.checked = !next;
+    updateHeroDetectorCard(name, !next);
+  }
 }
 
 function applyStatus(s){
@@ -380,6 +648,24 @@ function addEvents(events){
 
 async function toggleDetector(name, enabled){ await fetch(`/api/detector/${name}?enabled=${enabled}`, {method:"POST"}); }
 async function ack(){ await fetch("/api/ack", {method:"POST"}); }
+async function toggleHeroDetector(name) {
+  const checkbox = document.getElementById("t-" + name);
+
+  if (!checkbox) return;
+
+  const nextState = !checkbox.checked;
+
+  checkbox.checked = nextState;
+
+  updateHeroDetectorCard(name, nextState);
+
+  await toggleDetector(name, nextState);
+
+  document.getElementById("console").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
 
 function connect(){
   const proto = location.protocol === "https:" ? "wss" : "ws";

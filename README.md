@@ -2,7 +2,7 @@
 
 <img src="assets/logo.svg" alt="LIFE logo" width="120" height="120" />
 
-# Project - LIFE
+# VisionGuard
 
 ### Last-minute Intervention, Full Existence
 
@@ -60,7 +60,7 @@ https://github.com/user-attachments/assets/e80be64f-b1aa-4b79-ab4e-564d6877da90
 
 
 
-Project - LIFE watches a camera feed and recognizes emergencies the instant they happen &mdash;
+VisionGuard watches a camera feed and recognizes emergencies the instant they happen &mdash;
 a person **falling**, **fire or smoke**, an **armed threat** &mdash; then decides how
 serious the incident is, which agency should respond, **sounds a local alarm**, and
 **dispatches an alert**. A polished web console shows the live annotated feed, a
@@ -130,7 +130,7 @@ Component map:
 ## Quick start
 
 ```bash
-git clone https://github.com/RoboX2020/LIFE-system.git
+git clone https://github.com/Anjali-Singh764/VisionGuard.git
 cd LIFE-system
 python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate

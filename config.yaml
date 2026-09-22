@@ -109,7 +109,7 @@ fusion:
       cooldown_seconds: 30
 
 alarm:
-  enabled: true
+  enabled: false
   min_severity: HIGH
 
 notifications:
