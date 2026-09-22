@@ -13,49 +13,46 @@ source:
   path: 0
   width: 1280
   height: 720
-  loop: true            # for file/demo sources: restart when finished
+  loop: true
 
 processing:
-  max_fps: 15           # cap processing rate to keep CPU sane
+  max_fps: 15
 
 object_detector:
-  enabled: true
-  model: yolo26n.pt     # falls back automatically to an available YOLO weight
+  enabled: false
+  model: yolo26n.pt
   conf: 0.35
-  device: cpu           # "cpu", "0" (cuda), or "mps"
+  device: cpu
   person_label: person
 
 detectors:
   fall:
     enabled: true
-    horizontal_angle: 55.0        # torso angle (deg from vertical) considered "on the ground"
-    fall_velocity: 0.30           # normalized downward velocity/sec that flags a rapid drop
-    velocity_window_sec: 0.8      # look-back window for the rapid-drop signal
-    aspect_ratio_wide: 1.1        # bbox w/h above this = lying down
-    ground_persistence_frames: 6  # must stay down this many frames to CONFIRM a fall
-    vote_threshold: 2             # how many of {angle, velocity, aspect} must agree
+    horizontal_angle: 55.0
+    fall_velocity: 0.30
+    velocity_window_sec: 0.8
+    aspect_ratio_wide: 1.1
+    ground_persistence_frames: 6
+    vote_threshold: 2
     min_visibility: 0.5
 
   fire:
     enabled: true
-    model: models/fire.pt         # optional custom weights (fire/smoke classes)
+    model: models/fire.pt
     conf: 0.40
     heuristic:
-      enabled: true               # HSV + flicker fallback when no fire model is present
-      min_area_ratio: 0.0015      # fraction of frame that must look like fire
-      flicker_frames: 4           # frames of flicker before confirming
+      enabled: true
+      min_area_ratio: 0.0015
+      flicker_frames: 4
 
   weapon:
     enabled: true
-    model: models/weapon.pt       # optional custom weights (gun/rifle/etc.)
+    model: models/weapon.pt
     conf: 0.40
-    # labels treated as weapons (matched case-insensitively against model class names)
     labels: [knife, gun, pistol, rifle, firearm, weapon]
-    proximity_ratio: 1.6          # weapon within this * person-size is a "threat"
+    proximity_ratio: 1.6
 
 fusion:
-  # Single-signal rules. signal is one of:
-  #   fall, fire, smoke, weapon, weapon_threat, person
   rules:
     - name: confirmed_fall
       signal: fall
@@ -102,7 +99,6 @@ fusion:
       min_persistence: 1
       cooldown_seconds: 20
 
-  # Multi-signal combinations escalate severity.
   combinations:
     - name: fire_with_person
       requires: [fire, person]
@@ -114,27 +110,35 @@ fusion:
 
 alarm:
   enabled: true
-  min_severity: HIGH            # INFO < LOW < MEDIUM < HIGH < CRITICAL
+  min_severity: HIGH
 
 notifications:
   responders:
-    EMS:    { name: "Emergency Medical Services", contact: "108" }
-    FIRE:   { name: "Fire Department",            contact: "101" }
-    POLICE: { name: "Police",                     contact: "100" }
+    EMS:
+      name: "Emergency Medical Services"
+      contact: "108"
+
+    FIRE:
+      name: "Fire Department"
+      contact: "101"
+
+    POLICE:
+      name: "Police"
+      contact: "100"
+
   adapters:
     console:
       enabled: true
+
     webhook:
       enabled: false
       url: "http://localhost:9000/alert"
+
     email:
       enabled: false
-      # Activates only if these env vars are set:
-      # SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, ALERT_EMAIL_FROM, ALERT_EMAIL_TO
+
     sms:
       enabled: false
-      # Activates only if these env vars are set (requires `pip install twilio`):
-      # TWILIO_SID, TWILIO_TOKEN, TWILIO_FROM, ALERT_SMS_TO
 
 storage:
   snapshots_dir: data/snapshots
