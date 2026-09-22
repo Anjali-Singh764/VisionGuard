@@ -291,3 +291,19 @@ No changes to the fusion engine, event manager, alarm, or web console are requir
 ## License
 
 MIT &mdash; see [LICENSE](LICENSE).
+
+---
+
+## 🙏 Acknowledgements
+
+VisionGuard is an adapted and extended version of the
+[LIFE-system](https://github.com/RoboX2020/LIFE-system) project.
+
+The original project was modified and extended with changes to the
+interface, VisionGuard branding, configuration, deployment, and
+additional project-specific functionality.
+
+Original project:
+https://github.com/RoboX2020/LIFE-system
+
+The original project is licensed under the MIT License.
